@@ -1,0 +1,14 @@
+pipeline {
+    agent { node { label "Azure" } }
+    stages {        
+        stage('TerraformApply') {
+            steps {
+            sh '''
+            rm provider.tf
+            cp /home/devops/jenkins_slave/workspace/Azure_Terraform/Terraform/provider.tf /home/devops/jenkins_slave/workspace/Azure_Terraform/
+            echo 'variable "adet" {default = "'$VMCount'"}' >> provider.tf
+            terraform apply -no-color -auto-approve
+            '''
+            }
+        }
+  }
